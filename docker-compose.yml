@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+
+  # MySQL database service
+  db:
+    image: mysql:latest
+    container_name: cessca
+    restart: always
+    volumes:
+      - ./db/sql/create_schema.sql:/docker-entrypoint-initdb.d/create_schema.sql
+    environment:
+      - MYSQL_DATABASE=cessca
+      - MYSQL_USER=arturo
+      - MYSQL_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - "3306:3306"
+
+  # Redis cache service
+  cache:
+    image: redis:6.2-alpine
+    container_name: cessca_cache
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --loglevel warning --requirepass arturo3534305
